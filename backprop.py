@@ -108,6 +108,7 @@ def main():
     parser.add_argument("--n_iters", type=int, default=10000)
     parser.add_argument("--plot_before", action="store_true")
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--save", action="store_true")
     args = parser.parse_args()
 
     np.random.seed(args.seed)
@@ -140,7 +141,15 @@ def main():
 
     # plot the new decision boundaries
     plot_decision_regions(X, y, mlp)
-    plt.show()
+
+    if args.save:
+        fn = []
+        for key in ["seed", "lr", "init_std", "bonus", "n_hidden_nodes", "n_iters"]:
+            fn.append(f"{key}{getattr(args, key)}")
+        fn = "-".join(fn)
+        plt.savefig(f"plots/{fn}.png")
+    else:
+        plt.show()
     plt.close('all')
 
 
